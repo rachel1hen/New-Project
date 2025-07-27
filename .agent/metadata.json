@@ -31,6 +31,14 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-07-27T16:28:37.573431Z"
+    },
+    {
+      "prompt": "Generate a webpage using anime.js to have a dynamic content",
+      "response": "Generated response for: 'Generate a webpage using anime.js to have a dynamic content'",
+      "llm_model_used": "mock",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-07-27T16:49:28.432156Z"
     }
   ]
 }
