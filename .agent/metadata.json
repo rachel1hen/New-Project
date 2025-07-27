@@ -1,7 +1,7 @@
 {
   "created_at": "2025-07-27T09:09:03.302904Z",
-  "prompt": "Hi",
-  "response": "Generated response for: 'Hi'",
+  "prompt": "you there\nhow are you babe",
+  "response": "Generated response for: 'you there\nhow are you babe'",
   "llm_model_used": "mock",
   "language": "python",
   "status": "complete"
