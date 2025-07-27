@@ -1,8 +1,18 @@
 {
   "created_at": "2025-07-27T09:09:03.302904Z",
-  "prompt": "you there\nhow are you babe",
-  "response": "Generated response for: 'you there\nhow are you babe'",
+  "prompt": "hi thr",
+  "response": "Generated response for: 'hi thr'",
   "llm_model_used": "mock",
   "language": "python",
-  "status": "complete"
+  "status": "complete",
+  "history": [
+    {
+      "timestamp": "2025-07-27T09:29:33.772199Z",
+      "prompt": "hi thr",
+      "response": "Generated response for: 'hi thr'",
+      "llm_model_used": "mock",
+      "language": "python",
+      "status": "complete"
+    }
+  ]
 }
