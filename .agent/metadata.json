@@ -61,6 +61,17 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-07-27T17:54:13.943505Z"
+    },
+    {
+      "prompt": "Generate some webpage",
+      "response": {
+        "agent": "codegen",
+        "response": "Running CodeGenAgent on prompt: 'Generate some webpage'"
+      },
+      "llm_model_used": "mock",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-07-28T16:45:56.217657Z"
     }
   ]
 }
