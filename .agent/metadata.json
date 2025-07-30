@@ -113,6 +113,20 @@
       "language": "html",
       "status": "complete",
       "created_at": "2025-07-30T19:11:07.779660Z"
+    },
+    {
+      "prompt": "Generate a code in python to scape a webpage using some tool called transfila",
+      "response": {
+        "prompt": "Generate a code in python to scape a webpage using some tool called transfila",
+        "response": "I believe you meant \"Scrapy\" instead of \"Transfila\", as Scrapy is a popular Python framework for web scraping. Here's an example code to scrape a webpage using Scrapy:\n\n```python\n# Import the necessary libraries\nimport scrapy\n\n# Define the Spider class\nclass WebpageSpider(scrapy.Spider):\n    # Define the name of the spider\n    name = \"webpage_spider\"\n\n    # Define the URL of the webpage to scrape\n    start_urls = [\n        'http://example.com',  # Replace with the URL you want to scrape\n    ]\n\n    # Define the callback function to parse the HTML content\n    def parse(self, response):\n        # Extract the title of the webpage\n        title = response.css('title::text').get()\n        yield {\n            'title': title,\n        }\n\n        # Extract all the paragraph texts on the webpage\n        paragraphs = response.css('p::text').getall()\n        yield {\n            'paragraphs': paragraphs,\n        }\n\n        # Extract all the links on the webpage\n        links = response.css('a::attr(href)').getall()\n        yield {\n            'links': links,\n        }\n\n# To run the spider, save this code in a file (e.g., webpage_spider.py) and run it using the following command:\n# scrapy runspider webpage_spider.py -o output.json\n\n# Alternatively, you can use the Scrapy Crawler to run the spider\nfrom scrapy.crawler import CrawlerProcess\n\n# Create a new CrawlerProcess\nprocess = CrawlerProcess(settings={\n    'USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',\n    'FEED_FORMAT': 'json',\n    'FEED_URI': 'file:///output.json',\n})\n\n# Add the spider to the process\nprocess.crawl(WebpageSpider)\n\n# Start the process\nprocess.start()\n```\n\nThis code defines a spider that extracts the title, paragraphs, and links from a given webpage and saves the output to a JSON file. You can modify the `start_urls` list to scrape multiple webpages and adjust the `parse` method to extract the data you need.\n\nPlease note that before scraping a webpage, make sure you have the right to do so and respect the website's terms of use and robots.txt file. Additionally, be mindful of the website's resources and do not overload it with too many requests.",
+        "llm_model_used": "llama-3.3-70b-versatile",
+        "language": "html",
+        "status": "complete"
+      },
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "html",
+      "status": "complete",
+      "created_at": "2025-07-30T19:11:13.410865Z"
     }
   ]
 }
