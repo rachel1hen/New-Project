@@ -169,6 +169,14 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T10:51:53.754888Z"
+    },
+    {
+      "prompt": "Generate a code to show image from system",
+      "response": "# Import necessary libraries\nfrom PIL import Image\nimport os\n\ndef display_image(image_path):\n    \"\"\"\n    Displays an image from the system.\n\n    Args:\n        image_path (str): Path to the image file.\n    \"\"\"\n    try:\n        # Check if the file exists before attempting to open it\n        if not os.path.exists(image_path):\n            raise FileNotFoundError(\"Image file not found\")\n\n        # Check if the file is an image\n        supported_formats = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff')\n        if not image_path.lower().endswith(supported_formats):\n            raise ValueError(\"Invalid image file. Supported formats: {}\".format(', '.join(supported_formats)))\n\n        # Open the image file\n        img = Image.open(image_path)\n        \n        # Display the image\n        img.show()\n        \n    except FileNotFoundError as e:\n        print(f\"Error: {str(e)}\")\n    except ValueError as e:\n        print(f\"Error: {str(e)}\")\n    except Exception as e:\n        print(f\"An error occurred: {str(e)}\")\n\ndef main():\n    # Example usage\n    while True:\n        # Specify the path to the image file\n        image_path = input(\"Enter the path to the image file (or type 'exit' to quit): \")\n        \n        # Check if the user wants to exit\n        if image_path.strip().lower() == 'exit':\n            break\n        \n        # Check if the input is not empty\n        if not image_path.strip():\n            print(\"Please enter a valid image path.\")\n            continue\n        \n        # Display the image\n        display_image(image_path)\n\nif __name__ == \"__main__\":\n    main()",
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T10:51:59.416931Z"
     }
   ]
 }
