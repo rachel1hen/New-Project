@@ -221,6 +221,20 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T12:35:43.008175Z"
+    },
+    {
+      "prompt": "Generate a code to show image from system, the system should as to input a file and then it will show the image",
+      "response": {
+        "prompt": "Generate a code to show image from system, the system should as to input a file and then it will show the image",
+        "response": "**Image Viewer Code**\n======================\nBelow is a Python code using the OpenCV library to display an image from the system.\n\n```python\nimport cv2\nimport os\n\ndef display_image(image_path):\n    \"\"\"\n    Displays an image from the given path.\n    \n    Args:\n        image_path (str): The path to the image file.\n    \"\"\"\n    try:\n        # Read the image using OpenCV\n        image = cv2.imread(image_path)\n        \n        # Check if the image is loaded fine\n        if image is None:\n            print(\"Error: Could not load image.\")\n            return\n        \n        # Display the image\n        cv2.imshow(\"Image\", image)\n        \n        # Wait for a key press\n        cv2.waitKey(0)\n        \n        # Close all windows\n        cv2.destroyAllWindows()\n    \n    except Exception as e:\n        print(f\"An error occurred: {e}\")\n\ndef main():\n    # Ask the user for the image file path\n    image_path = input(\"Enter the image file path: \")\n    \n    # Check if the file exists\n    if not os.path.isfile(image_path):\n        print(\"Error: File not found.\")\n        return\n    \n    # Display the image\n    display_image(image_path)\n\nif __name__ == \"__main__\":\n    main()\n```\n\n**How to Run the Code**\n------------------------\n\n1. Install the OpenCV library by running `pip install opencv-python` in your terminal/command prompt.\n2. Save the above code in a file named `image_viewer.py`.\n3. Run the code by executing `python image_viewer.py` in your terminal/command prompt.\n4. When prompted, enter the path to the image file you want to display.\n5. The image will be displayed in a new window. Press any key to close the window.\n\n**Example Use Case**\n--------------------\n\nSuppose you have an image file named `image.jpg` located in the `C:\\Users\\Username\\Pictures` directory. To display this image, you would:\n\n1. Run the code.\n2. Enter `C:\\Users\\Username\\Pictures\\image.jpg` when prompted for the image file path.\n3. The image will be displayed in a new window.",
+        "llm_model_used": "llama-3.3-70b-versatile",
+        "language": "python",
+        "status": "complete"
+      },
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T12:58:42.378969Z"
     }
   ]
 }
