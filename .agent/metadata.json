@@ -279,6 +279,14 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T16:15:41.357937Z"
+    },
+    {
+      "prompt": "Generate a project to find even odd numbers",
+      "response": "def find_even_odd_numbers(numbers):\n    \"\"\"\n    This function takes a list of numbers and returns a dictionary with two keys: 'even' and 'odd'.\n    The values for these keys are lists of numbers that are even or odd respectively.\n\n    Args:\n        numbers (list): A list of integers.\n\n    Returns:\n        dict: A dictionary with 'even' and 'odd' keys.\n    \"\"\"\n    even_odd_dict = {'even': [], 'odd': []}\n    for num in numbers:\n        if not isinstance(num, int):\n            raise ValueError(\"The input list should only contain integers.\")\n        if num % 2 == 0:\n            even_odd_dict['even'].append(num)\n        else:\n            even_odd_dict['odd'].append(num)\n    return even_odd_dict\n\ndef get_user_input():\n    \"\"\"\n    This function gets the user input and returns a list of numbers.\n    The user can input a single number or a range of numbers (e.g., 1-10).\n\n    Returns:\n        list: A list of integers.\n    \"\"\"\n    while True:\n        user_input = input(\"Enter a number or a range of numbers (e.g., 1-10): \")\n        try:\n            if '-' in user_input:\n                start, end = map(int, user_input.split('-'))\n                if start <= end:\n                    return list(range(start, end + 1))\n                else:\n                    print(\"Invalid range. The start value should be less than or equal to the end value.\")\n            else:\n                return [int(user_input)]\n        except ValueError:\n            print(\"Invalid input. Please enter a number or a range of numbers (e.g., 1-10).\")\n\ndef main():\n    try:\n        numbers = get_user_input()\n        even_odd_dict = find_even_odd_numbers(numbers)\n        print(\"Even numbers: \", even_odd_dict['even'])\n        print(\"Odd numbers: \", even_odd_dict['odd'])\n    except Exception as e:\n        print(f\"An error occurred: {e}\")\n\nif __name__ == \"__main__\":\n    main()",
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T16:15:47.533483Z"
     }
   ]
 }
