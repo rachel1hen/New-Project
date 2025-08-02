@@ -309,6 +309,20 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T16:26:30.723602Z"
+    },
+    {
+      "prompt": "generate code for finding the odd man out in a numbers",
+      "response": {
+        "prompt": "generate code for finding the odd man out in a numbers",
+        "response": "**Finding the Odd Man Out in a List of Numbers**\n====================================================\n\nThis code will find the odd man out in a list of numbers. The odd man out is the number that appears only once in the list, while all other numbers appear more than once.\n\n**Python Solution**\n------------------\n\n```python\ndef find_odd_man_out(numbers):\n    \"\"\"\n    Find the odd man out in a list of numbers.\n\n    Args:\n        numbers (list): A list of integers.\n\n    Returns:\n        int: The odd man out.\n    \"\"\"\n    count_dict = {}\n    for num in numbers:\n        if num in count_dict:\n            count_dict[num] += 1\n        else:\n            count_dict[num] = 1\n\n    for num, count in count_dict.items():\n        if count == 1:\n            return num\n\n    return None\n\n# Example usage\nnumbers = [1, 2, 2, 3, 3, 4, 4, 5]\nodd_man_out = find_odd_man_out(numbers)\nprint(\"The odd man out is:\", odd_man_out)\n```\n\n**How it Works**\n-----------------\n\n1. Create an empty dictionary `count_dict` to store the count of each number.\n2. Iterate through the list of numbers. For each number, check if it's already in `count_dict`. If it is, increment its count. If not, add it to `count_dict` with a count of 1.\n3. Iterate through `count_dict` and find the number with a count of 1. This is the odd man out.\n4. Return the odd man out.\n\n**Alternative Solution using Collections.Counter**\n----------------------------------------------\n\n```python\nfrom collections import Counter\n\ndef find_odd_man_out(numbers):\n    count_dict = Counter(numbers)\n    for num, count in count_dict.items():\n        if count == 1:\n            return num\n    return None\n\n# Example usage\nnumbers = [1, 2, 2, 3, 3, 4, 4, 5]\nodd_man_out = find_odd_man_out(numbers)\nprint(\"The odd man out is:\", odd_man_out)\n```\n\nThis solution uses the `Counter` class from the `collections` module to count the occurrences of each number. The rest of the logic is the same as the previous solution.",
+        "llm_model_used": "llama-3.3-70b-versatile",
+        "language": "python",
+        "status": "complete"
+      },
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T16:35:38.067173Z"
     }
   ]
 }
