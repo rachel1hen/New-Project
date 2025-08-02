@@ -257,6 +257,14 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T15:51:32.687398Z"
+    },
+    {
+      "prompt": "Generate a code to show image from system, the system should as to input a file and then it will show the image",
+      "response": "import tkinter as tk\nfrom tkinter import filedialog\nfrom PIL import Image, ImageTk\n\ndef select_image():\n    \"\"\"Opens a file dialog for the user to select an image file.\"\"\"\n    filename = filedialog.askopenfilename(title=\"Select Image\", filetypes=[(\"Image Files\", \".jpg .jpeg .png .bmp\")])\n    if filename:\n        display_image(filename)\n\ndef display_image(image_path):\n    \"\"\"Displays the selected image in the Tkinter window.\"\"\"\n    try:\n        image = Image.open(image_path)\n        image.thumbnail((400, 400))  # Resize the image to fit the window\n        photo = ImageTk.PhotoImage(image)\n        label.config(image=photo)\n        label.image = photo  # Keep a reference to prevent garbage collection\n        label.config(text=\"\")  # Clear any previous error message\n    except Exception as e:\n        label.config(text=f\"Error loading image: {str(e)}\")\n        label.image = None  # Clear the image to prevent memory leaks\n\nroot = tk.Tk()\nroot.title(\"Image Viewer\")\n\n# Create a button to select an image file\nselect_button = tk.Button(root, text=\"Select Image\", command=select_image)\nselect_button.pack(pady=10)\n\n# Create a label to display the selected image\nlabel = tk.Label(root)\nlabel.pack()\n\nroot.geometry(\"500x500\")\nroot.mainloop()",
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T15:51:38.793819Z"
     }
   ]
 }
