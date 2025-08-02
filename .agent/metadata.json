@@ -331,6 +331,20 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T16:35:43.858609Z"
+    },
+    {
+      "prompt": "generate code for finding the odd man out in a numbers",
+      "response": {
+        "prompt": "generate code for finding the odd man out in a numbers",
+        "response": "**Finding the Odd Man Out in a List of Numbers**\n====================================================\n\nThis code takes a list of numbers as input and returns the number that appears an odd number of times. If all numbers appear an even number of times, it returns a message indicating that there is no odd man out.\n\n**Python Code**\n```python\ndef find_odd_man_out(numbers):\n    \"\"\"\n    Finds the number that appears an odd number of times in the list.\n\n    Args:\n        numbers (list): A list of integers.\n\n    Returns:\n        int: The number that appears an odd number of times. If all numbers appear an even number of times, returns None.\n    \"\"\"\n    count_dict = {}\n    for num in numbers:\n        if num in count_dict:\n            count_dict[num] += 1\n        else:\n            count_dict[num] = 1\n\n    odd_man_out = None\n    for num, count in count_dict.items():\n        if count % 2 != 0:\n            if odd_man_out is not None:\n                raise ValueError(\"More than one odd man out found\")\n            odd_man_out = num\n\n    return odd_man_out\n\ndef main():\n    numbers = [1, 2, 2, 3, 3, 3, 4, 4]\n    odd_man_out = find_odd_man_out(numbers)\n    if odd_man_out is not None:\n        print(f\"The odd man out is: {odd_man_out}\")\n    else:\n        print(\"There is no odd man out\")\n\nif __name__ == \"__main__\":\n    main()\n```\n\n**How it Works**\n---------------\n\n1. The `find_odd_man_out` function takes a list of numbers as input and creates a dictionary to store the count of each number.\n2. It then iterates over the list of numbers, incrementing the count for each number in the dictionary.\n3. After counting all the numbers, it iterates over the dictionary to find the number with an odd count.\n4. If it finds a number with an odd count, it returns that number. If it finds more than one number with an odd count, it raises a `ValueError`.\n5. If no number with an odd count is found, it returns `None`.\n\n**Example Use Cases**\n--------------------\n\n* `find_odd_man_out([1, 2, 2, 3, 3, 3, 4, 4])` returns `3`\n* `find_odd_man_out([1, 1, 2, 2, 3, 3])` returns `None`\n* `find_odd_man_out([1, 1, 2, 2, 3, 3, 4, 4, 5])` returns `5`",
+        "llm_model_used": "llama-3.3-70b-versatile",
+        "language": "python",
+        "status": "complete"
+      },
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T16:36:48.011479Z"
     }
   ]
 }
