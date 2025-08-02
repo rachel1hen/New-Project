@@ -243,6 +243,20 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T12:58:48.276945Z"
+    },
+    {
+      "prompt": "Generate a code to show image from system, the system should as to input a file and then it will show the image",
+      "response": {
+        "prompt": "Generate a code to show image from system, the system should as to input a file and then it will show the image",
+        "response": "**Image Viewer Code**\n=======================\n\nBelow is a Python code snippet that uses the Tkinter library to create a simple image viewer. The code will prompt the user to select an image file from their system and then display the selected image.\n\n```python\nimport tkinter as tk\nfrom tkinter import filedialog\nfrom PIL import Image, ImageTk\n\ndef select_image():\n    \"\"\"Opens a file dialog for the user to select an image file.\"\"\"\n    root.filename = filedialog.askopenfilename(title=\"Select Image\", filetypes=[(\"Image Files\", \".jpg .jpeg .png .bmp\")])\n    if root.filename:\n        display_image(root.filename)\n\ndef display_image(image_path):\n    \"\"\"Displays the selected image in the Tkinter window.\"\"\"\n    image = Image.open(image_path)\n    image.thumbnail((400, 400))  # Resize the image to fit the window\n    photo = ImageTk.PhotoImage(image)\n    label.config(image=photo)\n    label.image = photo  # Keep a reference to prevent garbage collection\n\nroot = tk.Tk()\nroot.title(\"Image Viewer\")\n\n# Create a button to select an image file\nselect_button = tk.Button(root, text=\"Select Image\", command=select_image)\nselect_button.pack(pady=10)\n\n# Create a label to display the selected image\nlabel = tk.Label(root)\nlabel.pack()\n\nroot.geometry(\"500x500\")\nroot.mainloop()\n```\n\n**How to Run the Code**\n------------------------\n\n1. Install the required libraries by running `pip install pillow` in your terminal/command prompt.\n2. Save the above code in a file named `image_viewer.py`.\n3. Run the code by executing `python image_viewer.py` in your terminal/command prompt.\n4. A Tkinter window will appear with a \"Select Image\" button.\n5. Click the button to select an image file from your system.\n6. The selected image will be displayed in the Tkinter window.\n\nNote: This code uses the Pillow library to handle image processing. Make sure to install it before running the code.",
+        "llm_model_used": "llama-3.3-70b-versatile",
+        "language": "python",
+        "status": "complete"
+      },
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T15:51:32.687398Z"
     }
   ]
 }
