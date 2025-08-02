@@ -213,6 +213,14 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T12:35:36.505149Z"
+    },
+    {
+      "prompt": "Generate a code to show image from system, the system should as to input a file and then it will show the image",
+      "response": "import tkinter as tk\nfrom tkinter import filedialog\nfrom PIL import Image, ImageTk\nimport matplotlib.pyplot as plt\nimport matplotlib.image as mpimg\n\ndef select_image():\n    # Open file dialog to select image file\n    file_path = filedialog.askopenfilename(title=\"Select Image File\", filetypes=[(\"Image Files\", \".jpg .jpeg .png .bmp\")])\n\n    if file_path:\n        # Display image using matplotlib\n        try:\n            img = mpimg.imread(file_path)\n            plt.imshow(img)\n            plt.show()\n        except Exception as e:\n            print(f\"Failed to display image using matplotlib: {str(e)}\")\n\n        # Display image using PIL\n        try:\n            img = Image.open(file_path)\n            img_tk = ImageTk.PhotoImage(img)\n            label = tk.Label(root, image=img_tk)\n            label.image = img_tk\n            label.pack()\n        except Exception as e:\n            print(f\"Failed to display image using PIL: {str(e)}\")\n\ndef main():\n    global root\n    root = tk.Tk()\n    root.title(\"Image Viewer\")\n    button = tk.Button(root, text=\"Select Image\", command=select_image)\n    button.pack()\n    root.mainloop()\n\nif __name__ == \"__main__\":\n    main()",
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T12:35:43.008175Z"
     }
   ]
 }
