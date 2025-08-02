@@ -345,6 +345,14 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T16:36:48.011479Z"
+    },
+    {
+      "prompt": "generate code for finding the odd man out in a numbers",
+      "response": "def find_odd_man_out(numbers):\n    \"\"\"\n    Finds the number that appears an odd number of times in the list.\n\n    Args:\n        numbers (list): A list of integers.\n\n    Returns:\n        int: The number that appears an odd number of times. If all numbers appear an even number of times, returns None.\n    \"\"\"\n    if not isinstance(numbers, list):\n        raise TypeError(\"Input must be a list\")\n\n    count_dict = {}\n    for num in numbers:\n        if not isinstance(num, int):\n            raise TypeError(\"All elements in the list must be integers\")\n        if num in count_dict:\n            count_dict[num] += 1\n        else:\n            count_dict[num] = 1\n\n    odd_man_out = None\n    for num, count in count_dict.items():\n        if count % 2 != 0:\n            if odd_man_out is not None:\n                raise ValueError(\"More than one odd man out found\")\n            odd_man_out = num\n\n    return odd_man_out\n\ndef main():\n    numbers = [1, 2, 2, 3, 3, 3, 4, 4]\n    try:\n        odd_man_out = find_odd_man_out(numbers)\n        if odd_man_out is not None:\n            print(f\"The odd man out is: {odd_man_out}\")\n        else:\n            print(\"There is no odd man out\")\n    except ValueError as e:\n        print(f\"Error: {e}\")\n    except TypeError as e:\n        print(f\"Error: {e}\")\n\nif __name__ == \"__main__\":\n    main()",
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T16:36:54.236653Z"
     }
   ]
 }
