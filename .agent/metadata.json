@@ -235,6 +235,14 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T12:58:42.378969Z"
+    },
+    {
+      "prompt": "Generate a code to show image from system, the system should as to input a file and then it will show the image",
+      "response": "import cv2\nimport os\n\ndef display_image(image_path):\n    \"\"\"\n    Displays an image from the given path.\n    \n    Args:\n        image_path (str): The path to the image file.\n    \"\"\"\n    try:\n        # Read the image using OpenCV\n        image = cv2.imread(image_path)\n        \n        # Check if the image is loaded fine\n        if image is None:\n            print(\"Error: Could not load image. Please check the file path and try again.\")\n            return\n        \n        # Display the image\n        cv2.imshow(\"Image\", image)\n        \n        # Wait for a key press\n        cv2.waitKey(0)\n        \n        # Close all windows\n        cv2.destroyAllWindows()\n    \n    except Exception as e:\n        print(f\"An error occurred: {e}\")\n\ndef main():\n    while True:\n        # Ask the user for the image file path\n        image_path = input(\"Enter the image file path (or 'q' to quit): \")\n        \n        # Check if the user wants to quit\n        if image_path.lower() == 'q':\n            break\n        \n        # Check if the file exists and is a file\n        if not os.path.isfile(image_path):\n            print(\"Error: File not found. Please check the file path and try again.\")\n            continue\n        \n        # Check if the file has a valid image extension\n        valid_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif']\n        if not any(image_path.lower().endswith(ext) for ext in valid_extensions):\n            print(\"Error: Invalid image file. Please check the file path and try again.\")\n            continue\n        \n        # Display the image\n        display_image(image_path)\n\nif __name__ == \"__main__\":\n    main()",
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T12:58:48.276945Z"
     }
   ]
 }
