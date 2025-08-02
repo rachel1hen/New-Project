@@ -155,6 +155,20 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-07-30T19:13:25.506914Z"
+    },
+    {
+      "prompt": "Generate a code to show image from system",
+      "response": {
+        "prompt": "Generate a code to show image from system",
+        "response": "**Displaying an Image from the System using Python**\n\nHere's an example code snippet that uses the Python Imaging Library (PIL) to display an image from the system:\n\n```python\n# Import necessary libraries\nfrom PIL import Image\nimport os\n\n# Function to display an image\ndef display_image(image_path):\n    \"\"\"\n    Displays an image from the system.\n\n    Args:\n        image_path (str): Path to the image file.\n    \"\"\"\n    try:\n        # Open the image file\n        img = Image.open(image_path)\n        \n        # Display the image\n        img.show()\n        \n    except FileNotFoundError:\n        print(\"Image file not found.\")\n    except Exception as e:\n        print(f\"An error occurred: {str(e)}\")\n\n# Example usage\nif __name__ == \"__main__\":\n    # Specify the path to the image file\n    image_path = input(\"Enter the path to the image file: \")\n    \n    # Display the image\n    display_image(image_path)\n```\n\n**How it works:**\n\n1. The code imports the necessary libraries: `PIL` for image processing and `os` for interacting with the operating system.\n2. The `display_image` function takes the path to the image file as an argument and attempts to open the image using `Image.open()`.\n3. If the image file is found, it displays the image using the `show()` method.\n4. The code includes error handling to catch exceptions such as `FileNotFoundError` if the image file is not found.\n5. In the example usage, the code prompts the user to enter the path to the image file and calls the `display_image` function to display the image.\n\n**Note:** Make sure to install the `Pillow` library (which includes PIL) by running `pip install pillow` in your terminal or command prompt before running this code.",
+        "llm_model_used": "llama-3.3-70b-versatile",
+        "language": "python",
+        "status": "complete"
+      },
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T10:51:53.754888Z"
     }
   ]
 }
