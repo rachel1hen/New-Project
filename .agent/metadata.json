@@ -323,6 +323,14 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T16:35:38.067173Z"
+    },
+    {
+      "prompt": "generate code for finding the odd man out in a numbers",
+      "response": "from collections import Counter\n\ndef find_odd_man_out(numbers):\n    \"\"\"\n    Find the odd man out in a list of numbers.\n\n    Args:\n        numbers (list): A list of integers.\n\n    Returns:\n        int: The odd man out, or None if no odd man out is found.\n    \"\"\"\n    if not isinstance(numbers, list) or not all(isinstance(num, int) for num in numbers):\n        raise ValueError(\"Input must be a list of integers\")\n\n    if len(numbers) == 0:\n        raise ValueError(\"Input list cannot be empty\")\n\n    count_dict = Counter(numbers)\n    odd_men_out = [num for num, count in count_dict.items() if count == 1]\n    if len(odd_men_out) > 1:\n        raise ValueError(\"More than one odd man out found in the list\")\n    elif len(odd_men_out) == 1:\n        return odd_men_out[0]\n    else:\n        return None\n\n# Example usage\ndef main():\n    numbers = [1, 2, 2, 3, 3, 4, 4, 5]\n    try:\n        odd_man_out = find_odd_man_out(numbers)\n        if odd_man_out is not None:\n            print(\"The odd man out is:\", odd_man_out)\n        else:\n            print(\"No odd man out found in the list\")\n    except ValueError as e:\n        print(\"Error:\", e)\n\nif __name__ == \"__main__\":\n    main()",
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T16:35:43.858609Z"
     }
   ]
 }
