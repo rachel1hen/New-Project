@@ -199,6 +199,20 @@
       "language": "python",
       "status": "complete",
       "created_at": "2025-08-02T10:56:17.373061Z"
+    },
+    {
+      "prompt": "Generate a code to show image from system, the system should as to input a file and then it will show the image",
+      "response": {
+        "prompt": "Generate a code to show image from system, the system should as to input a file and then it will show the image",
+        "response": "**Image Viewer Code**\n=======================\n\nThis code will prompt the user to input a file path, and then it will display the image using the Python Imaging Library (PIL) and matplotlib.\n\n```python\nimport tkinter as tk\nfrom tkinter import filedialog\nfrom PIL import Image, ImageTk\nimport matplotlib.pyplot as plt\nimport matplotlib.image as mpimg\n\ndef select_image():\n    # Open file dialog to select image file\n    root = tk.Tk()\n    root.withdraw()\n    file_path = filedialog.askopenfilename(title=\"Select Image File\", filetypes=[(\"Image Files\", \".jpg .jpeg .png .bmp\")])\n\n    if file_path:\n        # Display image using matplotlib\n        img = mpimg.imread(file_path)\n        plt.imshow(img)\n        plt.show()\n\n        # Display image using PIL\n        # img = Image.open(file_path)\n        # img_tk = ImageTk.PhotoImage(img)\n        # label = tk.Label(image=img_tk)\n        # label.image = img_tk\n        # label.pack()\n        # root = tk.Tk()\n        # root.mainloop()\n\nif __name__ == \"__main__\":\n    select_image()\n```\n\n**How to Use**\n---------------\n\n1. Save this code in a file with a `.py` extension (e.g., `image_viewer.py`).\n2. Install the required libraries by running `pip install pillow matplotlib` in your terminal/command prompt.\n3. Run the code by executing `python image_viewer.py` in your terminal/command prompt.\n4. A file dialog will appear, prompting you to select an image file.\n5. Select an image file and click \"Open\".\n6. The image will be displayed using matplotlib.\n\n**Note**: This code uses matplotlib to display the image. If you prefer to use PIL, you can uncomment the PIL-related code and comment out the matplotlib code. However, using PIL requires creating a tkinter window, which may not be desirable in all situations.",
+        "llm_model_used": "llama-3.3-70b-versatile",
+        "language": "python",
+        "status": "complete"
+      },
+      "llm_model_used": "llama-3.3-70b-versatile",
+      "language": "python",
+      "status": "complete",
+      "created_at": "2025-08-02T12:35:36.505149Z"
     }
   ]
 }
