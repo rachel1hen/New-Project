@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --upgrade pip
 
 # Install CPU-only PyTorch from PyTorch wheels URL
-RUN pip install torch==2.1.2+cpu -f https://download.pytorch.org/whl/torch_stable.html
+# RUN pip install torch==2.1.2+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 # Install other Python packages
 COPY requirements.txt .
