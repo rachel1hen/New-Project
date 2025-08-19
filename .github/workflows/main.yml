@@ -8,28 +8,29 @@ on:
 jobs:
   kokoro-tts:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y espeak-ng
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install kokoro soundfile torch
+          pip install kokoro torch soundfile
 
-      - name: Run Kokoro TTS script
+      - name: Run TTS script
         run: python generate_kokoro_tts.py
 
-      - name: Upload generated audio
+      - name: Upload audio artifacts
         uses: actions/upload-artifact@v4
         with:
           name: kokoro-audio
-          path: output.wav
+          path: '*.wav'
