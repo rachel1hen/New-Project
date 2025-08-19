@@ -1,17 +1,35 @@
 from kokoro import KPipeline
 import soundfile as sf
+import numpy as np
+import os
+
+def generate_audio(text, voice, lang='a'):
+    pipeline = KPipeline(lang_code=lang)
+    generator = pipeline(text, voice=voice)
+    return np.concatenate([audio for _, _, audio in generator])
 
 def main():
-    pipeline = KPipeline(lang_code='a')
-    text = '''
-    Kokoro is an open-weight TTS model with 82 million parameters. Despite its lightweight architecture, it delivers comparable quality to larger models while being significantly faster and more cost-efficient.
-    '''
-    generator = pipeline(text, voice='af_heart')
-    for i, (gs, ps, audio) in enumerate(generator):
-        print(f"Segment {i}: {gs}")
-        print(f"Phonemes: {ps}")
-        sf.write(f'{i}.wav', audio, 24000)
-    print("Audio segments saved.")
+    os.makedirs("audio", exist_ok=True)
 
-if __name__ == '__main__':
+    text = "This is a voice test using Kokoro. The next sentence will be spoken by a different voice."
+
+    voices = {
+        "female": "af_sarah",
+        "male": "am_michael"
+    }
+
+    audio_data = {}
+    for label, voice in voices.items():
+        print(f"🔈 Generating {label} voice with '{voice}'...")
+        audio = generate_audio(text, voice)
+        audio_data[label] = audio
+        sf.write(f"audio/{label}.wav", audio, 24000)
+
+    # Combine both voices sequentially
+    combined = np.concatenate([audio_data["female"], audio_data["male"]])
+    sf.write("audio/combined.wav", combined, 24000)
+
+    print("✅ Saved audio/female.wav, audio/male.wav, audio/combined.wav")
+
+if __name__ == "__main__":
     main()
