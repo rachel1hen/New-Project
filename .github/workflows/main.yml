@@ -29,7 +29,7 @@ jobs:
         run: python generate_kokoro_tts.py
 
       - name: Upload generated audio
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: kokoro-audio
           path: output.wav
