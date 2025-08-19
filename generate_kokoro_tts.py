@@ -9,7 +9,7 @@ def generate_audio(text, voice, lang='a'):
     return np.concatenate([audio for _, _, audio in generator])
 
 def main():
-    os.makedirs("audio", exist_ok=True)
+    # os.makedirs("audio", exist_ok=True)
 
     text = "This is a voice test using Kokoro. The next sentence will be spoken by a different voice."
 
@@ -23,13 +23,13 @@ def main():
         print(f"🔈 Generating {label} voice with '{voice}'...")
         audio = generate_audio(text, voice)
         audio_data[label] = audio
-        sf.write(f"audio/{label}.wav", audio, 24000)
+        sf.write(f"{label}.wav", audio, 24000)
 
     # Combine both voices sequentially
     combined = np.concatenate([audio_data["female"], audio_data["male"]])
-    sf.write("audio/combined.wav", combined, 24000)
+    sf.write("combined.wav", combined, 24000)
 
-    print("✅ Saved audio/female.wav, audio/male.wav, audio/combined.wav")
+    print("✅ Saved female.wav, male.wav, combined.wav")
 
 if __name__ == "__main__":
     main()
