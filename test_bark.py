@@ -1,6 +1,9 @@
 
 from bark import SAMPLE_RATE, generate_audio, preload_models
 from scipy.io.wavfile import write as write_wav
+import os
+os.environ["SUNO_USE_SMALL_MODELS"] = "True"
+os.environ["SUNO_OFFLOAD_CPU"] = "True"
 
 # download and load all models
 preload_models()
