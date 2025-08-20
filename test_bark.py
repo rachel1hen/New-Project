@@ -4,7 +4,7 @@ os.environ["SUNO_OFFLOAD_CPU"] = "True"
 
 from bark import SAMPLE_RATE, generate_audio, preload_models
 from scipy.io.wavfile import write as write_wav
-
+SAMPLE_RATE = 44100  # or 48000
 # download and load all models
 preload_models()
 
