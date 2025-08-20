@@ -37,3 +37,9 @@ jobs:
 
     - name: Run Bark Test Script
       run: python test_bark.py
+
+    - name: Upload Audio Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: bark-audio
+        path: bark_generation.wav
