@@ -11,8 +11,11 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
       
-    - name: Clean cache to free disk space
-      run: rm -rf ~/.cache/huggingface ~/.cache/suno
+    - name: Remove Cache
+      run: |
+          rm -rf $HOME/.cache/*
+          rm -rf /home/runner/.cache/*
+          rm -rf /home/runner/.cache/huggingface/*
       
     - name: Set up Python
       uses: actions/setup-python@v4
