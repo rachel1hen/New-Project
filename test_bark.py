@@ -14,9 +14,12 @@ text_prompt = """
      But I also have other interests such as playing tic tac toe.
 """
 audio_array = generate_audio(text_prompt)
+audio_int16 = np.int16(audio_array / np.max(np.abs(audio_array)) * 32767)
 
 # save audio to disk
-write_wav("bark_generation.wav", SAMPLE_RATE, audio_array)
+write_wav("bark_generation.wav", SAMPLE_RATE, audio_int16)
+# save audio to disk
+#write_wav("bark_generation.wav", SAMPLE_RATE, audio_array)
 
 print("✅ Audio generated and saved to bark_generation.wav")
 
