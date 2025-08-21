@@ -62,16 +62,8 @@ jobs:
 
 
       - name: Generate test audio
-        run: |
-          python -c "
-            import torchaudio
-            from tortoise.api import TextToSpeech
-            from tortoise.utils.audio import load_voice, save_wav
-            
-            tts = TextToSpeech()
-            output = tts.tts('Hello, my name is Suno. [clears throat] And, uh — and I like pizza. But I also have other interests such as playing tic tac toe.', voice_samples=None, conditioning_latents=None)
-            save_wav(output, 'output.wav')
-            "
+        run: python tortoise.py
+          
       - name: Upload audio
         uses: actions/upload-artifact@v4
         with:
