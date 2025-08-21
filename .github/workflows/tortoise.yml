@@ -62,7 +62,7 @@ jobs:
 
 
       - name: Generate test audio
-        run: python tortoise.py
+        run: python run_tort.py
           
       - name: Upload audio
         uses: actions/upload-artifact@v4
