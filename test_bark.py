@@ -9,7 +9,7 @@ from scipy.io.wavfile import write as write_wav
 # download and load all models
 preload_models()
 
-history_prompt = "v2/en_speaker_6"
+history_prompt = "v2/en_speaker_9"
 
 # generate audio from text
 text_prompt = """
