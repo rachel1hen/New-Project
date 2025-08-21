@@ -4,7 +4,7 @@
 
 from bark import SAMPLE_RATE, generate_audio, preload_models
 from scipy.io.wavfile import write as write_wav
-SAMPLE_RATE = 48000 #44100  # or 48000
+#SAMPLE_RATE = 48000 #44100  # or 48000
 # download and load all models
 preload_models()
 
