@@ -9,9 +9,9 @@ SAMPLE_RATE = 44100  # or 48000
 preload_models()
 
 # generate audio from text
-text_prompt = """
+mytext_prompt = """
      Hello, ♪ my name is Suno ♪. [clears throat] And, uh — and I like pizza. [laughs] 
-     But I also [music] have other interests such as playing tic tac toe.
+     But I also have other interests such as playing tic tac toe.
 """
 audio_array = generate_audio(text_prompt)
 
