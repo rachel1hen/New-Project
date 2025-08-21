@@ -27,9 +27,13 @@ text_prompt = """
      But I also have other interests such as playing tic tac toe.
 """
 for speak in speaker:
-     audio_array = generate_audio(text_prompt, history_prompt=speak)
-     filename = f"{speak.replace('/','_')}.wav"
-     write_wav(filename, SAMPLE_RATE,audio_array)
+     try:
+          
+         audio_array = generate_audio(text_prompt, history_prompt=speak)
+         filename = f"{speak.replace('/','_')}.wav"
+         write_wav(filename, SAMPLE_RATE,audio_array)
+     except Exception as e:
+          print("ohno")
 #audio_int16 = np.int16(audio_array / np.max(np.abs(audio_array)) * 32767)
 
 # save audio to disk
