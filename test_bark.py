@@ -10,7 +10,7 @@ preload_models()
 
 # generate audio from text
 text_prompt = """
-     Hello, ♪ my name is Suno ♪. [clears throat] And, uh — and I like pizza.
+     Hello, my name is Suno. [clears throat] And, uh — and I like pizza.
      But I also have other interests such as playing tic tac toe.
 """
 audio_array = generate_audio(text_prompt)
