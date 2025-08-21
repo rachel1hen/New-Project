@@ -1,9 +1,7 @@
 name: Tortoise-TTS CI
 
 on:
-  push:
-    branches:
-      - main
+
 
 jobs:
   run-tortoise:
@@ -61,7 +59,7 @@ jobs:
             save_wav(output, 'output.wav')
             "
       - name: Upload audio
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tts-audio
           path: output.wav
