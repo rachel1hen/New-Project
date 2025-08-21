@@ -40,12 +40,25 @@ jobs:
 
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
-
+        
       - name: Install PyTorch and Torchaudio
         run: pip install torch torchaudio
+        
+      - name: Clone Tortoise-TTS repository
+        run: git clone https://github.com/neonbjb/tortoise-tts.git
+      
+      - name: Patch setup.py to relax tokenizers dependency
+        run: |
+          cd tortoise-tts
+          sed -i 's/tokenizers==0.14.0/tokenizers\<0.14/' setup.py
+      
+      - name: Install Tortoise-TTS (patched)
+        run: |
+          cd tortoise-tts
+          pip install .
 
-      - name: Install Tortoise TTS
-        run: pip install git+https://github.com/neonbjb/tortoise-tts.git@7f14bb75fc9c3cd265ec3f456218b51b292f9fa0
+      # - name: Install Tortoise TTS
+      #   run: pip install git+https://github.com/neonbjb/tortoise-tts.git@7f14bb75fc9c3cd265ec3f456218b51b292f9fa0
 
 
       - name: Generate test audio
