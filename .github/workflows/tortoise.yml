@@ -45,7 +45,8 @@ jobs:
         run: pip install torch torchaudio
 
       - name: Install Tortoise TTS
-        run: pip install git+https://github.com/neonbjb/tortoise-tts.git
+        run: pip install git+https://github.com/neonbjb/tortoise-tts.git@7f14bb75fc9c3cd265ec3f456218b51b292f9fa0
+
 
       - name: Generate test audio
         run: |
