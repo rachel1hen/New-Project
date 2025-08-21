@@ -1,7 +1,7 @@
 name: Tortoise-TTS CI
 
 on:
-
+ workflow_dispatch:
 
 jobs:
   run-tortoise:
