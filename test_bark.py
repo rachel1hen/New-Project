@@ -1,6 +1,3 @@
-# import os
-# os.environ["SUNO_USE_SMALL_MODELS"] = "True"
-# os.environ["SUNO_OFFLOAD_CPU"] = "True"
 speaker =[
      "v2/en_speaker_9",
      "v2/en_speaker_1",
