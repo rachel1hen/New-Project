@@ -1,0 +1,36 @@
+name: xttsv2-sample
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-xtts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install TTS==0.21.1  # Coqui TTS with XTTSv2
+          pip install torch==2.2.2 torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Generate sample
+        run: |
+          python - <<'EOF'
+          from TTS.api import TTS
+          tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to("cpu")
+          text = "This is a sample narration from XTTS version two, demonstrating a natural voice."
+          tts.tts_to_file(text=text, file_path="xtts_sample.wav")
+          EOF
+
+      - name: Upload sample
+        uses: actions/upload-artifact@v4
+        with:
+          name: xtts_sample
+          path: xtts_sample.wav
