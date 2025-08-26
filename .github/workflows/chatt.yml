@@ -1,4 +1,4 @@
-name: Run ChatTTS
+name: Run ChatTTS (CPU)
 
 on:
   workflow_dispatch:
@@ -9,28 +9,122 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: System deps for soundfile
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsndfile1
+
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      - name: Install dependencies
-        run: |
-          pip install torch soundfile numpy
-          pip install git+https://github.com/2noise/ChatTTS.git
+      - name: Cache Hugging Face models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-hf-chattts
+          restore-keys: |
+            ${{ runner.os }}-hf-
 
-      - name: Run TTS
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch --extra-index-url https://download.pytorch.org/whl/cpu
+          pip install soundfile numpy
+          pip install "git+https://github.com/2noise/ChatTTS.git"
+
+      - name: Run ChatTTS inference
+        env:
+          HF_HOME: ~/.cache/huggingface
         run: |
           python - <<'EOF'
-          import ChatTTS
-          chat = ChatTTS.Chat()
-          chat.load_models()
-
-          texts = ["Hello! This is ChatTTS running on GitHub Actions."]
-          wavs = chat.infer(texts)
-
+          import os, sys, traceback
+          import numpy as np
           import soundfile as sf
-          sf.write("output.wav", wavs[0], 24000)
+          import torch
+
+          print("Python:", sys.version)
+          print("Torch:", torch.__version__)
+          torch.set_num_threads(2)
+
+          try:
+              import ChatTTS
+              print("ChatTTS module loaded OK")
+          except Exception as e:
+              print("Failed to import ChatTTS:", e)
+              sys.exit(1)
+
+          chat = ChatTTS.Chat()
+
+          # Handle both API variants gracefully
+          try:
+              if hasattr(chat, "load_models"):
+                  print("Using chat.load_models()")
+                  chat.load_models()
+              elif hasattr(chat, "download_models"):
+                  print("Using chat.download_models()")
+                  chat.download_models()
+              else:
+                  print("No load/download method found; proceeding (model may lazy-load).")
+          except Exception as e:
+              print("Model preparation failed:", e)
+              traceback.print_exc()
+
+          text = "Hello! This is ChatTTS running on GitHub Actions via CPU."
+          # Try both call signatures (str vs list)
+          wavs = None
+          for candidate in (text, [text]):
+              try:
+                  wavs = chat.infer(candidate)
+                  if wavs is not None:
+                      break
+              except TypeError:
+                  continue
+
+          if wavs is None:
+              print("Inference failed: chat.infer returned None")
+              sys.exit(1)
+
+          # Normalize outputs to a single np.ndarray
+          def pick_first_wave(x):
+              if isinstance(x, np.ndarray):
+                  return x
+              if isinstance(x, (list, tuple)):
+                  # flatten one level if it's list-of-arrays
+                  for item in x:
+                      if isinstance(item, np.ndarray):
+                          return item
+                      if isinstance(item, (list, tuple)) and len(item) and isinstance(item[0], (float, int, np.floating, np.integer)):
+                          return np.asarray(item, dtype=np.float32)
+              if isinstance(x, (list, tuple)) and len(x) and isinstance(x[0], (float, int, np.floating, np.integer)):
+                  return np.asarray(x, dtype=np.float32)
+              raise RuntimeError("Could not interpret ChatTTS output shape: " + repr(type(x)))
+
+          try:
+              wav = pick_first_wave(wavs)
+          except Exception as e:
+              print("Failed to parse waveform:", e)
+              traceback.print_exc()
+              sys.exit(1)
+
+          # Most ChatTTS exports are 24 kHz; if API exposes sr, prefer it.
+          sr = 24000
+          try:
+              if hasattr(chat, "sample_rate"):
+                  sr = int(getattr(chat, "sample_rate"))
+          except Exception:
+              pass
+
+          # Ensure float32 [-1, 1]
+          wav = np.asarray(wav, dtype=np.float32)
+          maxv = np.max(np.abs(wav)) if wav.size else 0.0
+          if maxv > 1.0:
+              wav = wav / maxv
+
+          out_path = "output.wav"
+          sf.write(out_path, wav, sr)
+          print(f"Wrote {out_path} at {sr} Hz; length {len(wav)/sr:.2f}s")
           EOF
 
       - name: Upload Audio
