@@ -40,18 +40,20 @@ jobs:
         run: |
           curl -L -o input.wav https://storage.googleapis.com/chatterbox-demo-samples/samples/numbers_random_woman.wav
 
+      
       - name: Run RVC Inference
         run: |
           cd rvc
           # Adjust these paths if needed based on your model selection
-          python infer_web.py \
+          # python infer_web.py \
+          python infer-web.py --pycmd \
             --input_path ../input.wav \
             --model_path assets/pretrained_v2/G40k.pth \
-            # --config_path configs/config.json \
+            --config_path configs/config.json \
             --hubert_path assets/hubert/hubert_base.pt \
             # --index_path assets/pretrained_v2/added_IVF.index \
             # --rmvpe_path rmvpe.pt \
-            --uvr5_path uvr5_weights/HP2-人声vocals+非人声instrumentals.pth \
+            #--uvr5_path uvr5_weights/HP2-人声vocals+非人声instrumentals.pth \
             --output_path ../rvc_output.wav
 
       - name: Upload RVC sample
