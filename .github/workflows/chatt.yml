@@ -1,13 +1,13 @@
-name: Run Chatterbox TTS
+name: Run ChatTTS
 
-on: 
+on:
   workflow_dispatch:
 
 jobs:
   run-tts:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -16,19 +16,25 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install chatterbox_tts torch soundfile
+          pip install torch soundfile numpy
+          pip install git+https://github.com/2noise/ChatTTS.git
 
       - name: Run TTS
         run: |
           python - <<'EOF'
-          from chatterbox_tts import Chatter
-          chatter = Chatter()
-          audio = chatter.speak("Hello! This is Chatterbox running on GitHub Actions.")
-          chatter.save(audio, "output.wav")
+          import ChatTTS
+          chat = ChatTTS.Chat()
+          chat.load_models()
+
+          texts = ["Hello! This is ChatTTS running on GitHub Actions."]
+          wavs = chat.infer(texts)
+
+          import soundfile as sf
+          sf.write("output.wav", wavs[0], 24000)
           EOF
 
       - name: Upload Audio
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
-          name: chatterbox-audio
+          name: chattts-audio
           path: output.wav
