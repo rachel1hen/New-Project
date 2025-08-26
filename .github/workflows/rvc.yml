@@ -24,19 +24,34 @@ jobs:
           pip install fairseq2
           pip install TTS
           # Clone and install RVC
-          git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion.git rvc
+          # git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion.git rvc
+          # cd rvc
+      - name: Clone RVC WebUI
+        run: |
+          git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI.git rvc
           cd rvc
 
+      - name: Download pretrained models
+        run: |
+          cd rvc
+          python tools/download_models.py
+          
       - name: Download example input
         run: |
           curl -L -o input.wav https://storage.googleapis.com/chatterbox-demo-samples/samples/numbers_random_woman.wav
 
-      - name: Run RVC Conversion
+      - name: Run RVC Inference
         run: |
           cd rvc
-          # NOTE: Replace model path with a pretrained RVC checkpoint (needs a real model)
-          echo "Pretend RVC conversion done here with input.wav -> rvc_output.wav"
-          cp ../input.wav ../rvc_output.wav
+          # Adjust these paths if needed based on your model selection
+          python infer_cli.py \
+            --input_path ../input.wav \
+            --model_path assets/pretrained_v2/G40k.pth \
+            --config_path configs/config.json \
+            --hubert_path assets/hubert/hubert_base.pt \
+            --index_path assets/pretrained_v2/added_IVF.index \
+            --rmvpe_path rmvpe.pt \
+            --output_path ../rvc_output.wav
 
       - name: Upload RVC sample
         uses: actions/upload-artifact@v4
