@@ -34,7 +34,7 @@ jobs:
           pip install torch==2.2.2+cpu torchvision==0.17.2+cpu torchaudio==2.2.2+cpu \
             --index-url https://download.pytorch.org/whl/cpu
           pip install soundfile numpy
-          pip install "git+https://github.com/2noise/ChatTTS.git@b7f1d94"
+          pip install "git+https://github.com/2noise/ChatTTS.git@4f72f4a23da353bd780133a83241d6dc9f694861"
 
       - name: Run ChatTTS inference
         env:
