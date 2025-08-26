@@ -25,7 +25,7 @@ jobs:
           pip install TTS
           # Clone and install RVC
           git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion.git rvc
-          cd rvc && pip install -r requirements.txt
+          cd rvc
 
       - name: Download example input
         run: |
