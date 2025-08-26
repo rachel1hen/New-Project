@@ -67,6 +67,7 @@ jobs:
               elif hasattr(chat, "download_models"):
                   print("Using chat.download_models()")
                   chat.download_models()
+                  chat.load_models()
               else:
                   print("No load/download method found; proceeding (model may lazy-load).")
           except Exception as e:
