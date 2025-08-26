@@ -17,7 +17,11 @@ jobs:
 
       - name: Install RVC
         run: |
-          pip install fairseq librosa soundfile numpy torch==2.2.2 torchaudio --index-url https://download.pytorch.org/whl/cpu
+          # First install torch/torchaudio from PyTorch CPU index
+          pip install torch==2.2.2 torchaudio --index-url https://download.pytorch.org/whl/cpu
+          # Then install the rest from PyPI (default)
+          pip install fairseq librosa soundfile numpy
+          # Clone and install RVC
           git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion.git rvc
           cd rvc && pip install -r requirements.txt
 
