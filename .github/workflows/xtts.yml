@@ -28,7 +28,7 @@ jobs:
           os.environ["COQUI_TOS_AGREED"] = "1"
           tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to("cpu")
           text = "This is a sample narration from XTTS version two, demonstrating a natural voice."
-          tts.tts_to_file(text=text, file_path="xtts_sample.wav")
+          tts.tts_to_file(text=text, file_path="xtts_sample.wav", language="en")
           EOF
 
       - name: Upload sample
