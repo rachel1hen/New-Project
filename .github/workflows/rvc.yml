@@ -22,6 +22,7 @@ jobs:
           # Then install the rest from PyPI (default)
           pip install librosa soundfile numpy
           pip install fairseq2
+          pip install TTS
           # Clone and install RVC
           git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion.git rvc
           cd rvc && pip install -r requirements.txt
