@@ -39,14 +39,13 @@ jobs:
     - name: Run inference via Python API
       run: |
         python -c "
-         from pathlib import Path
-         from scipy.io import wavfile
-         from rvc.modules.vc.modules import VC
-
-         vc = VC()
-         vc.get_vc('assets/pretrained/D_RigelFT_40k_9801520.pth')
-         tgt_sr, audio_opt, _, _ = vc.vc_inference(1, Path('input.wav'))
-         wavfile.write('output.wav', tgt_sr, audio_opt)"
+        from pathlib import Path
+        from scipy.io import wavfile
+        from rvc.modules.vc.modules import VC
+        vc = VC()
+        vc.get_vc('assets/pretrained/D_RigelFT_40k_9801520.pth')
+        tgt_sr, audio_opt, _, _ = vc.vc_inference(1, Path('input.wav'))
+        wavfile.write('output.wav', tgt_sr, audio_opt)"
 
     - name: Upload output wav
       uses: actions/upload-artifact@v4
