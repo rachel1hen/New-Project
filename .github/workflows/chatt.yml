@@ -1,10 +1,7 @@
 name: ChatTTS Full Setup and Verify
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow-dispatch:
 
 jobs:
   run_chattts:
