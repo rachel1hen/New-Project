@@ -28,7 +28,8 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg
           pip install ffmpeg-python
           pip install faiss-cpu==1.7.2
-          pip install praat-parselmouth llvmlite aria2 Cython tensorboardX Werkzeug torchfcpe torchcrepe pyworld colorama uvicorn pyasn1 pyasn1-modules absl-py audioread tabulate sympy tornado tqdm tensorboard resampy Pillow matplotlib json5 Markdown fairseq aria2 llvmlite joblib numba numpy gradio Jinja2                                                        
+          pip install git+https://github.com/facebookresearch/fairseq.git@v0.12.2
+          pip install praat-parselmouth llvmlite aria2 Cython tensorboardX Werkzeug torchfcpe torchcrepe pyworld colorama uvicorn pyasn1 pyasn1-modules absl-py audioread tabulate sympy tornado tqdm tensorboard resampy Pillow matplotlib json5 Markdown aria2 llvmlite joblib numba numpy gradio Jinja2                                                        
           # Clone and install RVC
           # git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion.git rvc
           # cd rvc
