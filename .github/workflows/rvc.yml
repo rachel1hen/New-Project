@@ -24,9 +24,13 @@ jobs:
           pip install fairseq2
           pip install TTS
           pip install python-dotenv
+          sudo apt-get update && sudo apt-get install -y ffmpeg
+          pip install ffmpeg-python
+          pip install faiss-cpu==1.7.2
           # Clone and install RVC
           # git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion.git rvc
           # cd rvc
+          
       - name: Clone RVC WebUI
         run: |
           git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI.git rvc
