@@ -39,6 +39,7 @@ jobs:
 
         import torchaudio as ta
         from chatterbox.tts import ChatterboxTTS
+        AUDIO_PROMPT_PATH="female_random_podcast.wav"
 
         model = ChatterboxTTS.from_pretrained(device="cpu")
 
