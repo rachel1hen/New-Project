@@ -19,35 +19,39 @@ jobs:
     - name: Upgrade pip and install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install torch pyyaml ChatTTS
+        pip install torch pyyaml
+        git clone https://github.com/resemble-ai/chatterbox.git
+        cd chatterbox
+        pip install -e .
 
-    - name: Download ChatTTS models
-      run: |
-        mkdir -p asset/tokenizer
+    #- name: Download ChatTTS models
+      #run: |
+       # mkdir -p asset/tokenizer
         # Replace below URLs with real model/tokenizer URLs
-        curl -L -o asset/GPT.pt "https://example.com/path/to/GPT.pt"
-        curl -L -o asset/vocoder.pt "https://example.com/path/to/vocoder.pt"
+       # curl -L -o asset/GPT.pt "https://example.com/path/to/GPT.pt"
+       # curl -L -o asset/vocoder.pt "https://example.com/path/to/vocoder.pt"
         # For tokenizer, you may need to download multiple files or a zipped tokenizer folder
         # curl -L -o asset/tokenizer/tokenizer_file "https://example.com/path/to/tokenizer_file"
 
     - name: Run ChatTTS inference and save output
       run: |
         python << 'EOF'
-        import os
-        from ChatTTS.core import ChatTTS
 
-        chat = ChatTTS.Chat()
-        chat.load_models(
-            gpt_model_path="asset/GPT.pt",
-            vocoder_model_path="asset/vocoder.pt",
-            tokenizer_path="asset/tokenizer"
-        )
-        text = "Hello from GitHub Actions with ChatTTS!"
-        audio = chat.infer(text)
-        os.makedirs("output", exist_ok=True)
-        with open("output/test.wav", "wb") as f:
-            f.write(audio)
-        print("Inference done, audio saved to output/test.wav")
+        import torchaudio as ta
+        from chatterbox.tts import ChatterboxTTS
+
+        model = ChatterboxTTS.from_pretrained(device="cuda")
+
+        text = "Ezreal and Jinx teamed up with Ahri, Yasuo, and Teemo to take down the enemy's Nexus in an epic late-game pentakill."
+        wav = model.generate(text)
+        ta.save("test-1.wav", wav, model.sr)
+
+        # If you want to synthesize with a different voice, specify the audio prompt
+        #AUDIO_PROMPT_PATH = "YOUR_FILE.wav"
+        #wav = model.generate(text, audio_prompt_path=AUDIO_PROMPT_PATH)
+        #ta.save("test-2.wav", wav, model.sr)
+
+
         EOF
 
     - name: Upload audio artifact for download
