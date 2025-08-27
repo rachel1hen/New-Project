@@ -1,85 +1,56 @@
-name: rvc-sample
+name: RVC Inference Workflow
 
 on:
   workflow_dispatch:
 
 jobs:
-  run-rvc:
+  run-inference:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    - name: Checkout repo
+      uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
+    - name: Setup Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.10
 
-      - name: Install RVC
-        run: |
-          python -m pip install pip==24.0
-          # First install torch/torchaudio from PyTorch CPU index
-          pip install torch==2.2.2 torchaudio --index-url https://download.pytorch.org/whl/cpu
-          # Then install the rest from PyPI (default)
-          pip install librosa soundfile numpy
-          pip install fairseq2
-          pip install TTS
-          pip install av
-          pip install omegaconf==2.0.5 hydra-core==1.0.7
-          pip install fairseq==0.12.2 --use-deprecated=legacy-resolver
+    - name: Install system dependencies
+      run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-          pip install python-dotenv
-          sudo apt-get update && sudo apt-get install -y ffmpeg
-          pip install ffmpeg-python
-          pip install faiss-cpu==1.7.2
-          pip install praat-parselmouth llvmlite aria2 Cython tensorboardX Werkzeug torchfcpe torchcrepe pyworld colorama uvicorn pyasn1 pyasn1-modules absl-py audioread tabulate sympy tornado tqdm tensorboard resampy Pillow matplotlib json5 Markdown aria2 llvmlite joblib numba numpy gradio Jinja2                                                        
-          # Clone and install RVC
-          # git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion.git rvc
-          # cd rvc
-          
-      - name: Clone RVC WebUI
-        run: |
-          git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion rvc
-          # git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI.git rvc
-          cd rvc
-          # pip install -r rvc/requirements.txt
+    - name: Install RVC package
+      run: pip install git+https://github.com/RVC-Project/Retrieval-based-Voice-Conversion
 
-      #- name: Download pretrained models
-      #  run: |
-       #   cd rvc
-       #   python tools/download_models.py
-          
-      - name: Download example input
-        run: |
-          curl -L -o input.wav https://storage.googleapis.com/chatterbox-demo-samples/samples/numbers_random_woman.wav
+    - name: Create assets folder structure
+      run: |
+        mkdir -p assets/hubert
+        mkdir -p assets/pretrained
 
-      
-      - name: Run RVC Inference
-        run: |
-          cd rvc
-          python infer-web.py --pycmd python \
-          --input_path ../input.wav \
-          --model_path assets/pretrained_v2/G40k.pth \
-          --config_path configs/config.json \
-          --hubert_path assets/hubert/hubert_base.pt \
-          --output_path ../rvc_output.wav
-  
+    - name: Download pretrained models
+      run: |
+        curl -L -o assets/hubert/hubert_inputs.pth https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/raw/main/assets/hubert/hubert_inputs.pth
+        curl -L -o assets/Synthesizer_inputs.pth https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/raw/main/assets/Synthesizer_inputs.pth
+        curl -L -o assets/pretrained/D_RigelFT_40k_9801520.pth https://huggingface.co/MUSTAR/Rigel-rvc-base-pretrained-model/resolve/main/Rigel_40k_Base_and_FineTuned/FineTuned-model_40k/Alpha/D_RigelFT_40k_9801520.pth
 
-          
-          # Adjust these paths if needed based on your model selection
-          # python infer_web.py \
-          #python infer-web.py --pycmd \
-           # --input_path ../input.wav \
-           # --model_path assets/pretrained_v2/G40k.pth \
-          #  --config_path configs/config.json \
-          #  --hubert_path assets/hubert/hubert_base.pt \
-            # --index_path assets/pretrained_v2/added_IVF.index \
-            # --rmvpe_path rmvpe.pt \
-            #--uvr5_path uvr5_weights/HP2-人声vocals+非人声instrumentals.pth \
-          #  --output_path ../rvc_output.wav
+    - name: Download input audio
+      run: curl -L -o input.wav https://storage.googleapis.com/chatterbox-demo-samples/samples/duff_random_woman_podcast.wav
 
-      - name: Upload RVC sample
-        uses: actions/upload-artifact@v4
-        with:
-          name: rvc_sample
-          path: rvc_output.wav
+    - name: Run inference via Python API
+      run: |
+        python -c "
+         from pathlib import Path
+         from scipy.io import wavfile
+         from rvc.modules.vc.modules import VC
+
+         vc = VC()
+         vc.get_vc('assets/pretrained/D_RigelFT_40k_9801520.pth')
+         tgt_sr, audio_opt, _, _ = vc.vc_inference(1, Path('input.wav'))
+         wavfile.write('output.wav', tgt_sr, audio_opt)"
+
+    - name: Upload output wav
+      uses: actions/upload-artifact@v4
+      with:
+        name: rvc_inference_output
+        path: output.wav
+        
