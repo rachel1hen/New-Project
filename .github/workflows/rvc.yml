@@ -23,6 +23,7 @@ jobs:
           pip install librosa soundfile numpy
           pip install fairseq2
           pip install TTS
+          pip install av
           pip install python-dotenv
           sudo apt-get update && sudo apt-get install -y ffmpeg
           pip install ffmpeg-python
