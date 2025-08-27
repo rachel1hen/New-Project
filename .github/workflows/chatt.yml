@@ -34,7 +34,7 @@ jobs:
       run: |
         python << 'EOF'
         import os
-        from ChatTTS import ChatTTS
+        from ChatTTS.core import ChatTTS
 
         chat = ChatTTS.Chat()
         chat.load_models(
