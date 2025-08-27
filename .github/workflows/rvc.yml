@@ -39,7 +39,8 @@ jobs:
           
       - name: Clone RVC WebUI
         run: |
-          git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI.git rvc
+          git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion rvc
+          # git clone https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI.git rvc
           cd rvc
           # pip install -r rvc/requirements.txt
 
