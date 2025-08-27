@@ -44,10 +44,10 @@ jobs:
           cd rvc
           # pip install -r rvc/requirements.txt
 
-      - name: Download pretrained models
-        run: |
-          cd rvc
-          python tools/download_models.py
+      #- name: Download pretrained models
+      #  run: |
+       #   cd rvc
+       #   python tools/download_models.py
           
       - name: Download example input
         run: |
