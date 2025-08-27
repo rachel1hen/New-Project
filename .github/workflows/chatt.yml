@@ -1,7 +1,7 @@
 name: ChatTTS Full Setup and Verify
 
 on:
-  workflow-dispatch:
+  workflow_dispatch:
 
 jobs:
   run_chattts:
