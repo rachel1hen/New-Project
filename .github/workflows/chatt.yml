@@ -51,7 +51,7 @@ jobs:
         EOF
 
     - name: Upload audio artifact for download
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: chattts-audio
         path: output/test.wav
