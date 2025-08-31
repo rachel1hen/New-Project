@@ -55,7 +55,7 @@ jobs:
       working-directory: ./Zonos
       run: |
         docker run --rm \
-          -e TRITON_DISABLE=1 \
+          -e CUDA_VISIBLE_DEVICES="" \  
           -v ${{ github.workspace }}/Zonos:/Zonos \
           -w /Zonos \
           zonos \
