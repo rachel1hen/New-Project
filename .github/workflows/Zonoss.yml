@@ -1,9 +1,7 @@
 name: Run Zonos TTS on CPU
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   run-zonos-tts:
