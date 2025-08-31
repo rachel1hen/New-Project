@@ -1,0 +1,62 @@
+name: Run Zonos TTS on CPU
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-zonos-tts:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install torch --extra-index-url https://download.pytorch.org/whl/cpu
+        pip install torchaudio
+        pip install git+https://github.com/Zyphra/Zonos.git
+        sudo apt-get update && sudo apt-get install -y espeak-ng
+
+    - name: Zonos inference Python code
+      run: |
+        python -c "
+        import torch
+        import torchaudio
+        from zonos.model import Zonos
+        from zonos.conditioning import make_cond_dict
+
+        device = torch.device('cpu')
+        model = Zonos.from_pretrained('Zyphra/Zonos-v0.1-transformer', device=device)
+        model.eval()
+
+        text = 'Hello from Zonos running on GitHub Actions CPU environment!'
+        dummy_wav, sr = torchaudio.load('assets/exampleaudio.mp3') if False else None  # No prefix, so skipped
+
+        speaker = None
+        if dummy_wav is not None:
+            speaker = model.make_speaker_embedding(dummy_wav, sr)
+
+        cond_dict = make_cond_dict(text=text, speaker=speaker, language='en-us')
+        conditioning = model.prepare_conditioning(cond_dict)
+
+        codes = model.generate(conditioning)
+
+        wavs = model.autoencoder.decode(codes).cpu()
+        torchaudio.save('zonos_output.wav', wavs[0], model.autoencoder.sampling_rate)
+        print('>>> Audio saved as zonos_output.wav')
+        "
+    - name: Upload output audio artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: zonos_audio_output
+        path: zonos_output.wav
+        
