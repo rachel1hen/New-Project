@@ -1,0 +1,46 @@
+name: Kimi-Audio macOS Test
+
+on: [push, pull_request]
+
+jobs:
+  run-kimiaudio:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install PyTorch for macOS
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch torchvision torchaudio
+
+      - name: Install dependencies and Kimi-Audio package
+        run: |
+          git clone https://github.com/MoonshotAI/Kimi-Audio.git
+          cd Kimi-Audio
+          pip install -r requirements.txt
+          #pip install git+https://github.com/MoonshotAI/Kimi-Audio.git
+
+      - name: Run basic Kimi-Audio example
+        run: |
+          python -c "
+          import torch
+           
+          from kimi_audio import KimiAudio
+
+          # Load model
+          model = KimiAudio.from_pretrained('moonshotai/kimi-audio-v0.1')
+
+          # Dummy audio input (1 second of silence at 16kHz)
+          dummy_audio = torch.zeros(1, 16000)
+
+          # Run inference (audio understanding example)
+          output = model.audio_to_text(dummy_audio)
+          print('Inference output:', output)
+          "
