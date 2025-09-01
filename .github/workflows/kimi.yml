@@ -26,6 +26,8 @@ jobs:
           pip install torch torchaudio
           #pip install git+https://github.com/Dao-AILab/flash-attn.git --no-build-isolation
           pip install packaging
+          pip install wheel
+          
           pip install flash_attn==2.8.3 --no-build-isolation
           
           pip install git+https://github.com/MoonshotAI/Kimi-Audio.git
