@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-kimiaudio:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
@@ -23,9 +23,10 @@ jobs:
 
       - name: Install dependencies and Kimi-Audio package
         run: |
-          git clone https://github.com/MoonshotAI/Kimi-Audio.git
-          cd Kimi-Audio
-          pip install -r requirements.txt
+          pip install git+https://github.com/MoonshotAI/Kimi-Audio.git
+          #git clone https://github.com/MoonshotAI/Kimi-Audio.git
+          #cd Kimi-Audio
+          #pip install -r requirements.txt
           #pip install git+https://github.com/MoonshotAI/Kimi-Audio.git
 
       - name: Run basic Kimi-Audio example
