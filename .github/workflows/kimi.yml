@@ -1,7 +1,7 @@
 name: Kimi-Audio macOS Test
 
 on:
-workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   run-kimiaudio:
