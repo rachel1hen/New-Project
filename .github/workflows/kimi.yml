@@ -12,7 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+      - name: Install Python3 and pip inside container
+        run: |
+          apt-get update
+          apt-get install -y python3 python3-pip
+    
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
@@ -21,14 +25,14 @@ jobs:
 
       - name: Install dependencies and Kimi-Audio package
         run: |
-          pip install torch torchaudio
+          python3 -m pip install torch torchaudio
           #pip install git+https://github.com/Dao-AILab/flash-attn.git --no-build-isolation
-          pip install packaging
-          pip install wheel numpy
+          python3 -m pip install packaging
+          python3 -m pip install wheel numpy
           
-          pip install flash_attn==2.8.3 --no-build-isolation
+          python3 -m pip install flash_attn==2.8.3 --no-build-isolation
           
-          pip install git+https://github.com/MoonshotAI/Kimi-Audio.git
+          python3 -m pip install git+https://github.com/MoonshotAI/Kimi-Audio.git
           #git clone https://github.com/MoonshotAI/Kimi-Audio.git
           #cd Kimi-Audio
           #git submodule update --init --recursive
