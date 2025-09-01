@@ -24,6 +24,8 @@ jobs:
       - name: Install dependencies and Kimi-Audio package
         run: |
           pip install torch torchaudio
+          pip install git+https://github.com/Dao-AILab/flash-attn.git --no-build-isolation
+          
           pip install git+https://github.com/MoonshotAI/Kimi-Audio.git
           #git clone https://github.com/MoonshotAI/Kimi-Audio.git
           #cd Kimi-Audio
