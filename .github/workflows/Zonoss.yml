@@ -54,8 +54,9 @@ jobs:
             # Optional resampling if sample rate not 44.1kHz
             if sr != 44100:
                 print("🔁 Resampling to 44.1kHz")
-                torchaudio.save("resampled.wav", waveform, 44100)
-                speaker_path = "resampled.wav"
+                resampler = torchaudio.transforms.Resample(orig_freq=sr, new_freq=44100)
+                waveform = resampler(waveform)
+                sr = 44100
             else:
                 print("🎯 Sample rate is OK")
         
@@ -66,7 +67,7 @@ jobs:
         # ✅ Build conditioning
         cond_dict = make_cond_dict(
             text="This is voice-cloned audio from a podcast speaker.",
-            speaker=speaker_path,
+            speaker=(waveform, sr),
             language="en-us"
         )
         
