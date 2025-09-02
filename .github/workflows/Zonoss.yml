@@ -38,9 +38,9 @@ jobs:
         device = torch.device("cpu")
         
         model = Zonos.from_pretrained("Zyphra/Zonos-v0.1-transformer", device=device)
-        
+        speaker_path = "../female_random_podcast.wav"
         # Optional: no speaker cloning
-        cond_dict = make_cond_dict(text="Hello from GitHub Actions on CPU-only.", speaker=None, language="en-us")
+        cond_dict = make_cond_dict(text="Hello from GitHub Actions on CPU-only.", speaker=speaker_path, language="en-us")
         conditioning = model.prepare_conditioning(cond_dict)
         
         codes = model.generate(conditioning)
