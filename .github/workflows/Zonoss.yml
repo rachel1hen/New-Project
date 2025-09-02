@@ -62,7 +62,8 @@ jobs:
         cond_dict = make_cond_dict(
             text="This is voice-cloned audio from a podcast speaker.",
             speaker=speaker,
-            language="en-us"
+            language="en-us",
+            emotion="happy" 
         )
         
         conditioning = model.prepare_conditioning(cond_dict)
