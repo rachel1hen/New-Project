@@ -13,8 +13,8 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y espeak-ng python3-pip git
+        #sudo apt-get update
+        sudo apt-get install -y espeak-ng #python3-pip git
 
     - name: Clone and install Zonos
       run: |
@@ -27,26 +27,27 @@ jobs:
     - name: Run Zonos TTS inline
       run: |
         cd Zonos
-        python -c "
+     
+        python - << 'EOF'
         import torch
-        from zonos.inference import infer
-        from zonos.models import load_model
-        
-        # Load transformer model (CPU)
-        model = load_model('transformer', device='cpu')
-        
-        # Run inference
-        audio = infer(
-            model,
-            text='Hello from GitHub Actions on CPU.',
-            language='en',
-            speaker_wav=None  # no voice cloning
-        )
-        
-        # Save audio
         import torchaudio
-        torchaudio.save('output.wav', audio.unsqueeze(0), 44100)
-                "
+        from zonos.model import Zonos
+        from zonos.conditioning import make_cond_dict
+        
+        # Force usage of CPU
+        device = torch.device("cpu")
+        
+        model = Zonos.from_pretrained("Zyphra/Zonos-v0.1-transformer", device=device)
+        
+        # Optional: no speaker cloning
+        cond_dict = make_cond_dict(text="Hello from GitHub Actions on CPU-only.", speaker=None, language="en-us")
+        conditioning = model.prepare_conditioning(cond_dict)
+        
+        codes = model.generate(conditioning)
+        
+        wavs = model.autoencoder.decode(codes).cpu()
+        torchaudio.save("output.wav", wavs[0], model.autoencoder.sampling_rate)
+        EOF
 
     - name: Upload generated audio
       uses: actions/upload-artifact@v4
