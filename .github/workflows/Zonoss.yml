@@ -1,70 +1,55 @@
-name: Run Zonos TTS on CPU
+name: Zonos TTS (Inline Inference)
 
 on:
   workflow_dispatch:
 
 jobs:
-  run-zonos-tts:
+  zonos-inference:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Free up disk space
-      run: |
-        sudo apt-get clean
-        sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
-          /usr/local/share/boost /usr/local/share/chromium /usr/share/swift \
-          /usr/local/graalvm /opt/hostedtoolcache/CodeQL
-        docker system prune -af || true
-        sudo rm -rf /var/lib/mysql /var/lib/postgresql
-        sudo rm -rf /tmp/*
-        sudo rm -rf $HOME/.cargo
-        sudo rm -rf $HOME/.gem
-        sudo rm -rf $HOME/.rustup
-        sudo rm -rf $HOME/.nvm
-        sudo rm -rf $HOME/.npm
-        sudo rm -rf $HOME/.gradle
-        sudo rm -rf $HOME/.cache
-        sudo rm -rf /home/runner/.cache
-        
-    - name: Remove Cache
-      run: |
-          rm -rf /home/runner/.cache/huggingface/*
-          
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - name: Checkout repo (optional)
+      uses: actions/checkout@v3
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
-
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install torch 
-        pip install torchaudio
-        #pip install git+https://github.com/Zyphra/Zonos.git
+        sudo apt-get update
+        sudo apt-get install -y espeak-ng python3-pip git
+
+    - name: Clone and install Zonos
+      run: |
         git clone https://github.com/Zyphra/Zonos.git
-        sudo apt-get update && sudo apt-get install -y espeak-ng
-    
-    - name: Build Docker image
-      working-directory: ./Zonos
-      run: docker build -t zonos .
+        cd Zonos
+        pip install --upgrade pip
+        pip install -e .
+        pip install torch  # CPU version
 
-    - name: Run inference in Docker container (CPU)
-      working-directory: ./Zonos
+    - name: Run Zonos TTS inline
       run: |
-        docker run --rm \
-          -e CUDA_VISIBLE_DEVICES="" \  
-          -v ${{ github.workspace }}/Zonos:/Zonos \
-          -w /Zonos \
-          zonos \
-          python sample.py
-          
-    
-    - name: Upload output audio artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: zonos_audio_output
-        path: sample.wav
+        cd Zonos
+        python -c "
+        import torch
+        from zonos.inference import infer
+        from zonos.models import load_model
         
+        # Load transformer model (CPU)
+        model = load_model('transformer', device='cpu')
+        
+        # Run inference
+        audio = infer(
+            model,
+            text='Hello from GitHub Actions on CPU.',
+            language='en',
+            speaker_wav=None  # no voice cloning
+        )
+        
+        # Save audio
+        import torchaudio
+        torchaudio.save('output.wav', audio.unsqueeze(0), 44100)
+                "
+
+    - name: Upload generated audio
+      uses: actions/upload-artifact@v3
+      with:
+        name: zonos-tts-output
+        path: Zonos/output.wav
