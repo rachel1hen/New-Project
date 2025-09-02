@@ -41,6 +41,7 @@ jobs:
         
         speaker_path = "female_random_podcast.wav"
         
+        
         # 🔍 Check file exists
         assert os.path.exists(speaker_path), f"❌ File not found: {speaker_path}"
         print("✅ Speaker file exists:", speaker_path)
@@ -50,15 +51,8 @@ jobs:
             waveform, sr = torchaudio.load(speaker_path)
             print("✅ Loaded waveform shape:", waveform.shape)
             print("📢 Sample rate:", sr)
-        
-            # Optional resampling if sample rate not 44.1kHz
-            if sr != 44100:
-                print("🔁 Resampling to 44.1kHz")
-                resampler = torchaudio.transforms.Resample(orig_freq=sr, new_freq=44100)
-                waveform = resampler(waveform)
-                sr = 44100
-            else:
-                print("🎯 Sample rate is OK")
+            wav, sampling_rate = torchaudio.load("female_random_podcast.wav")
+            speaker = model.make_speaker_embedding(wav, sampling_rate)
         
         except Exception as e:
             print("❌ Failed to load speaker audio:", e)
@@ -67,7 +61,7 @@ jobs:
         # ✅ Build conditioning
         cond_dict = make_cond_dict(
             text="This is voice-cloned audio from a podcast speaker.",
-            speaker=waveform,
+            speaker=speaker,
             language="en-us"
         )
         
