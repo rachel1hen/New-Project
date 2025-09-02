@@ -26,8 +26,9 @@ jobs:
 
     - name: Run Zonos TTS inline
       run: |
+        cp female_random_podcast.wav Zonos/
         cd Zonos
-     
+        
         python - << 'EOF'
         import torch
         import torchaudio
@@ -38,7 +39,7 @@ jobs:
         device = torch.device("cpu")
         
         model = Zonos.from_pretrained("Zyphra/Zonos-v0.1-transformer", device=device)
-        speaker_path = "../female_random_podcast.wav"
+        speaker_path = "female_random_podcast.wav"
         # Optional: no speaker cloning
         cond_dict = make_cond_dict(text="Hello from GitHub Actions on CPU-only.", speaker=speaker_path, language="en-us")
         conditioning = model.prepare_conditioning(cond_dict)
