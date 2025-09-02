@@ -67,7 +67,7 @@ jobs:
         # ✅ Build conditioning
         cond_dict = make_cond_dict(
             text="This is voice-cloned audio from a podcast speaker.",
-            speaker=(waveform, sr),
+            speaker=waveform,
             language="en-us"
         )
         
