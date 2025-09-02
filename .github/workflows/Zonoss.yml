@@ -32,24 +32,49 @@ jobs:
         python - << 'EOF'
         import torch
         import torchaudio
+        import os
         from zonos.model import Zonos
         from zonos.conditioning import make_cond_dict
         
-        # Force usage of CPU
         device = torch.device("cpu")
-        
         model = Zonos.from_pretrained("Zyphra/Zonos-v0.1-transformer", device=device)
+        
         speaker_path = "female_random_podcast.wav"
-        # Optional: no speaker cloning
-        cond_dict = make_cond_dict(text="Hello from GitHub Actions on CPU-only.", speaker=speaker_path, language="en-us")
+        
+        # 🔍 Check file exists
+        assert os.path.exists(speaker_path), f"❌ File not found: {speaker_path}"
+        print("✅ Speaker file exists:", speaker_path)
+        
+        # 🔍 Try loading waveform
+        try:
+            waveform, sr = torchaudio.load(speaker_path)
+            print("✅ Loaded waveform shape:", waveform.shape)
+            print("📢 Sample rate:", sr)
+        
+            # Optional resampling if sample rate not 44.1kHz
+            if sr != 44100:
+                print("🔁 Resampling to 44.1kHz")
+                torchaudio.save("resampled.wav", waveform, 44100)
+                speaker_path = "resampled.wav"
+            else:
+                print("🎯 Sample rate is OK")
+        
+        except Exception as e:
+            print("❌ Failed to load speaker audio:", e)
+            speaker_path = None  # fallback to default voice
+        
+        # ✅ Build conditioning
+        cond_dict = make_cond_dict(
+            text="This is voice-cloned audio from a podcast speaker.",
+            speaker=speaker_path,
+            language="en-us"
+        )
+        
         conditioning = model.prepare_conditioning(cond_dict)
-        
         codes = model.generate(conditioning)
-        
         wavs = model.autoencoder.decode(codes).cpu()
         torchaudio.save("output.wav", wavs[0], model.autoencoder.sampling_rate)
         EOF
-
     - name: Upload generated audio
       uses: actions/upload-artifact@v4
       with:
