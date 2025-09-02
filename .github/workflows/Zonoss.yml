@@ -59,11 +59,16 @@ jobs:
             speaker_path = None  # fallback to default voice
         
         # ✅ Build conditioning
+        if hasattr(model, "emotion_conditioner"):
+            print("🎭 Emotion conditioning supported")
+            emotion_embedding = model.make_emotion_embedding("sad")  # 🔥 use this
+        else:
+            emotion_embedding = None
         cond_dict = make_cond_dict(
             text="This is voice-cloned audio from a podcast speaker.",
             speaker=speaker,
             language="en-us",
-            emotion="happy" 
+            emotion=emotion_embedding 
         )
         
         conditioning = model.prepare_conditioning(cond_dict)
