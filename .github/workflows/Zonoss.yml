@@ -53,7 +53,6 @@ jobs:
             print("📢 Sample rate:", sr)
             wav, sampling_rate = torchaudio.load("female_random_podcast.wav")
             speaker = model.make_speaker_embedding(wav, sampling_rate)
-        
         except Exception as e:
             print("❌ Failed to load speaker audio:", e)
             speaker_path = None  # fallback to default voice
@@ -64,6 +63,10 @@ jobs:
             emotion_embedding = model.make_emotion_embedding("sad")  # 🔥 use this
         else:
             emotion_embedding = None
+
+        if emotion_embedding is None:
+            print("⚠️ Emotion embedding is None, skipping emotion conditioning")
+
         cond_dict = make_cond_dict(
             text="This is voice-cloned audio from a podcast speaker.",
             speaker=speaker,
