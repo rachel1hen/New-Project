@@ -71,7 +71,7 @@ jobs:
             text="This is voice-cloned audio from a podcast speaker.",
             speaker=speaker,
             language="en-us",
-            emotion=emotion = [1.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02]
+            emotion=[1.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02]
         )
         
         conditioning = model.prepare_conditioning(cond_dict)
