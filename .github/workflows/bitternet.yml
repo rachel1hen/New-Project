@@ -50,14 +50,24 @@ jobs:
         cd BitNet
         huggingface-cli login --token ${{ secrets.HF_TOKEN }}
         huggingface-cli download microsoft/BitNet-b1.58-2B-4T-gguf --local-dir models/BitNet-b1.58-2B-4T
+    - name: Verify Model Download
+      run: |
+          echo "Verifying model download..."
+          ls -l models/BitNet-b1.58-2B-4T
+          file models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf  # Check if it's a valid GGUF file
 
     - name: Run setup_env.py (optional)
       run: |
+        source ~/miniconda3/etc/profile.d/conda.sh
+        conda activate bitnet-cpp  
         cd BitNet
         python setup_env.py -md models/BitNet-b1.58-2B-4T -q i2_s
 
+
     - name: Run inference
       run: |
+        source ~/miniconda3/etc/profile.d/conda.sh
+        conda activate bitnet-cpp  
         cd BitNet
         python run_inference.py -m models/BitNet-b1.58-2B-4T -p "Explain gravity like I'm 5." -t 4 -n 80 -temp 0.7 > output.txt
         echo "✅ Inference complete. See output.txt"
