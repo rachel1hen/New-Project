@@ -69,7 +69,8 @@ jobs:
         source ~/miniconda3/etc/profile.d/conda.sh
         conda activate bitnet-cpp  
         cd BitNet
-        python run_inference.py -m models/BitNet-b1.58-2B-4T -p "Explain gravity like I'm 5." -t 4 -n 80 -temp 0.7 > output.txt
+        python run_inference.py -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf -p "Explain gravity like I'm 5." -t 4 -n 80 -temp 0.7 > output.txt
+        #python run_inference.py -m models/BitNet-b1.58-2B-4T -p "Explain gravity like I'm 5." -t 4 -n 80 -temp 0.7 > output.txt
         echo "✅ Inference complete. See output.txt"
 
     - name: Upload output as artifact
