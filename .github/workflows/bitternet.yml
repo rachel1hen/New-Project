@@ -18,6 +18,11 @@ jobs:
         miniconda-version: 'latest'
         auto-activate-base: false
 
+    - name: Initialize Conda in shell (needed for activation)
+      run: |
+        conda init bash
+        source ~/.bashrc
+        
     - name: Create Conda environment and activate it
       run: |
         conda create -n bitnet-cpp python=3.9 -y
