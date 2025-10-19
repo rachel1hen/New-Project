@@ -45,6 +45,8 @@ jobs:
 
     - name: Download BitNet model from Hugging Face
       run: |
+        source ~/miniconda3/etc/profile.d/conda.sh
+        conda activate bitnet-cpp      
         cd BitNet
         huggingface-cli login --token ${{ secrets.HF_TOKEN }}
         huggingface-cli download microsoft/BitNet-b1.58-2B-4T-gguf --local-dir models/BitNet-b1.58-2B-4T
