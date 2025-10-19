@@ -1,4 +1,4 @@
-name: Run BitNet on CPU in GitHub Actions
+name: Run BitNet in GitHub Actions (Python-only)
 
 on:
   workflow_dispatch:
@@ -8,12 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout this repo (for logging)
+    - name: Checkout this repo
       uses: actions/checkout@v3
 
     - name: Clone Microsoft BitNet repo
       run: |
-        git clone --recursive https://github.com/microsoft/BitNet.git
+        git clone https://github.com/microsoft/BitNet.git
         cd BitNet
         ls -l
 
@@ -22,27 +22,14 @@ jobs:
       with:
         python-version: 3.9
 
-    - name: Install system dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y build-essential cmake git
-
-    - name: Set up Python venv and install requirements
+    - name: Install dependencies
       run: |
         cd BitNet
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
         pip install huggingface_hub
 
-    - name: Build BitNet with GCC
-      run: |
-        cd BitNet
-        mkdir build
-        cd build
-        cmake ..
-        make -j$(nproc)
-
-    - name: Download BitNet model from Hugging Face
+    - name: Download BitNet model
       run: |
         cd BitNet
         huggingface-cli login --token ${{ secrets.HF_TOKEN }}
@@ -53,11 +40,10 @@ jobs:
         cd BitNet
         python run_inference.py \
           -m bitnet-model \
-          -p "What is the capital of India?" \
+          -p "Explain gravity like I'm 5." \
           -t 4 \
-          -n 60 \
+          -n 80 \
           -temp 0.7 > output.txt
-        echo "✅ Inference complete. See output.txt"
 
     - name: Upload output as artifact
       uses: actions/upload-artifact@v4
