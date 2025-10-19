@@ -1,4 +1,4 @@
-name: Run BitNet in GitHub Actions (Python-only)
+name: Run BitNet in GitHub Actions (Python-only with Conda)
 
 on:
   workflow_dispatch:
@@ -6,44 +6,51 @@ on:
 jobs:
   run-bitnet:
     runs-on: ubuntu-latest
-
     steps:
+
     - name: Checkout this repo
       uses: actions/checkout@v3
 
-    - name: Clone Microsoft BitNet repo
+    - name: Set up Conda environment
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: 3.9
+        miniconda-version: 'latest'
+        auto-activate-base: false
+
+    - name: Create Conda environment and activate it
       run: |
-        git clone https://github.com/microsoft/BitNet.git
+        conda create -n bitnet-cpp python=3.9 -y
+        conda activate bitnet-cpp
+
+    - name: Install core dependencies manually (to avoid broken requirements.txt)
+      run: |
+        conda activate bitnet-cpp
+        pip install --upgrade pip
+        pip install torch numpy sentencepiece transformers huggingface_hub
+
+    - name: Clone BitNet repo (with submodules)
+      run: |
+        git clone --recursive https://github.com/microsoft/BitNet.git
         cd BitNet
         ls -l
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.9
-
-    - name: Install dependencies
-      run: |
-        cd BitNet
-        python -m pip install --upgrade pip
-        python -m pip install -r requirements.txt
-        pip install huggingface_hub
-
-    - name: Download BitNet model
+    - name: Download BitNet model from Hugging Face
       run: |
         cd BitNet
         huggingface-cli login --token ${{ secrets.HF_TOKEN }}
-        huggingface-cli download microsoft/bitnet-b1.58-2B-4T --local-dir bitnet-model
+        huggingface-cli download microsoft/BitNet-b1.58-2B-4T-gguf --local-dir models/BitNet-b1.58-2B-4T
+
+    - name: Run setup_env.py (optional)
+      run: |
+        cd BitNet
+        python setup_env.py -md models/BitNet-b1.58-2B-4T -q i2_s
 
     - name: Run inference
       run: |
         cd BitNet
-        python run_inference.py \
-          -m bitnet-model \
-          -p "Explain gravity like I'm 5." \
-          -t 4 \
-          -n 80 \
-          -temp 0.7 > output.txt
+        python run_inference.py -m models/BitNet-b1.58-2B-4T -p "Explain gravity like I'm 5." -t 4 -n 80 -temp 0.7 > output.txt
+        echo "✅ Inference complete. See output.txt"
 
     - name: Upload output as artifact
       uses: actions/upload-artifact@v4
